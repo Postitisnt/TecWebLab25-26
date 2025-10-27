@@ -1,0 +1,290 @@
+/* General Styles */
+* {
+    box-sizing: border-box; /* Considera anche padding e border nelle dimensioni di width ed height, 
+    rendendo il layout più prevedibile e i calcoli più semplici. Serve ad evitare la fuoriuscita 
+    degli elementi dal loro container quando si aggiungono bordi o margini interni. */
+    /* 
+    In pratica:
+        Potremmo definire ad esempio una [width di 200px], un [padding di 20px], e un [bordo di 5px] per un dato elemento. 
+        Le casistiche principali sono: 
+                
+            - box-sizing: content-box; (opzione di default se non si specifica altro): 
+                        DIMENSIONE TOTALE = contenuto [width] + [padding sinistro + padding destro] + [bordo sinistro + bordo destro]
+                            = 200 + 20 + 20 + 5 + 5
+                            = 250px totali
+
+            - box-sizing: border-box; : 
+                        DIMENSIONE TOTALE = 200px esatti (padding e bordo inclusi)
+
+        Chiaramente, lo stesso discorso vale nella definizione di height di un elemento.
+    */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh; /* L'altezza del body occupa almeno l'intera altezza della viewport -> 
+    Serve a evitare che il body risulti più basso della finestra se il contenuto è poco (ad esmepio, in una pagina con poco testo). */
+    width: 100vw;
+    font-family: Arial, sans-serif;
+    line-height: 1.6; /* Spaziatura tra le linee del testo per una migliore leggibilità */
+    display: flex;
+    flex-direction: column; /* Disposizione degli elementi interni in colonna */
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    display: flex; /* Layout flex per posizionare logo e menu in una riga */
+    justify-content: space-between; /* Spaziatura tra logo e menu */
+    align-items: center; /* Allinea verticalmente al centro */
+    background-color: #2c2f48;
+    color: #ffffff;
+    padding: 20px 40px; /* Spaziatura interna dell'header ([sopra/sotto] [sx/dx]) */
+    flex-shrink: 0; 
+    /* 
+        flex-shrink controlla quanto un elemento flex può ridursi quando lo spazio nel contenitore non è sufficiente.
+
+        Funziona SOLO per gli elementi che sono figli di un contenitore con display: flex o display: inline-flex.
+        Negli altri casi (block, grid, ecc.) viene ignorato. [Nel nostro caso, l'header è figlio del body!]
+
+        Valori:
+        - 0 → l'elemento NON si riduce mai
+        - 1 → si riduce normalmente (valore predefinito)
+        - 2 o più → si riduce più velocemente degli altri elementi
+
+        Esempio pratico:
+        Se tre box larghi 200px ciascuno (totale 600px) sono dentro un contenitore largo solo 400px,
+        i box si restringono in base al loro valore di flex-shrink.
+
+        Quindi:
+        .box1 { flex-shrink: 0; }  // non si riduce
+        .box2 { flex-shrink: 1; }  // si riduce normalmente
+        .box3 { flex-shrink: 2; }  // si riduce il doppio degli altri
+    */
+}
+
+header .logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none; /* Rimuove i bullet points dalla lista */
+    display: flex; /* Disposizione dei link di navigazione in orizzontale -> flex-direction: row; [default per display: flex;] */
+}
+
+nav ul li {
+    margin-left: 20px; /* Spaziatura tra i link di navigazione */
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    font-weight: 500; /* spessore/grassetto */
+    transition: color 0.3s; /* Transizione morbida del colore in hover */
+}
+
+nav ul li a:hover {
+    color: #a0c4ff;
+}
+
+/* Main Content Styles */
+main {
+    display: flex; /* Layout flessibile per affiancare articolo e sidebar -> default in row per flex-direction */
+    flex: 1 0 auto; /* Occupa lo spazio rimanente della pagina -> flex: [flex-grow] [flex-shrink] [flex-basis]; */
+    /* 
+        Significato:
+        - flex-grow: 1  -> l'elemento può crescere per occupare spazio extra
+        - flex-shrink: 0 -> l'elemento NON si riduce quando lo spazio manca
+        - flex-basis: auto -> la dimensione iniziale si basa sul contenuto o su width
+
+        In pratica:
+        L'elemento parte dalla sua dimensione naturale, può allargarsi se c'è spazio disponibile,
+        ma non si restringe mai sotto la sua misura di base.
+
+        Esempio:
+        .container { display: flex; }
+        .box { flex: 1 0 auto; }
+
+        -> Ogni box si espande per riempire lo spazio, ma non si riduce mai
+    */
+    margin: 20px 40px; /* Margini laterali del contenuto principale */
+    gap: 20px; /* Spaziatura tra articolo e sidebar */
+}
+
+article {
+    flex: 2; /* Articolo più largo rispetto alla sidebar -> sta per flex-grow, perciò questo elemento, all'interno di un container flex
+    sarà largo (potrà crescere) il doppio di un altro elemento con flex: 1; [che nel nostro caso è l'aside]
+    Sarebbe equivalente a: flex: 2 1 0%;, perciò con flex-basis: 0%; stiamo dicendo che lo spazio viene distribuito tutto in base a flex-grow 
+    invece il flex-shrink: 1; indica che l'elemento può restringersi normalmente se lo spazio non basta */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra il contenuto (orizzontalmente) all'interno dell'articolo */
+    text-align: center; /* Centra il testo per un aspetto equilibrato */
+}
+
+/* BREVE PARENTESI SU ALIGN-ITEMS:
+  align-items: center;
+  -> allinea gli elementi figli lungo l'asse trasversale (perpendicolare alla direzione del flex)
+
+  Significato:
+  - Se flex-direction è 'row' (default) -> centra gli elementi in verticale
+  - Se flex-direction è 'column' -> centra gli elementi in orizzontale
+
+  Altri valori utili:
+  - flex-start -> allinea in alto (o a sinistra se in colonna)
+  - flex-end -> allinea in basso (o a destra se in colonna)
+  - stretch -> (default) allunga gli elementi per riempire tutto lo spazio
+  - baseline -> allinea alla linea di base del testo
+
+  Esempio:
+  .container {
+    display: flex;
+    align-items: center;
+  }
+
+  -> Centra verticalmente (o orizzontalmente, se in colonna) gli elementi all'interno del container.
+*/
+
+
+article h1 {
+    margin-bottom: 20px; /* Spaziatura inferiore per il titolo */
+    color: #2c2f48;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+article img {
+    width: 80%; /* Riduce leggermente la larghezza dell'immagine */
+    max-width: 500px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 12px; /* Arrotonda gli angoli dell'immagine */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra leggera per dare profondità */
+}
+
+article p {
+    max-width: 100%;
+    color: #555;
+    line-height: 1.8;
+    text-align: justify; /* Giustifica il testo per occupare tutta la larghezza */
+}
+
+/* Sidebar Styles */
+aside {
+    flex: 1; /* Sidebar più stretta rispetto all'articolo -> vedere commento del 'flex: 2;' sopra */
+    background-color: #f8f9fc;
+    border: 1px solid #e0e4e8;
+    border-radius: 8px;
+    padding: 20px; /* Spaziatura interna della sidebar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Ombra morbida per dare rilievo */
+    align-items: center; /* in questo caso, 'align-items' non serve a nulla, in quanto l'aside non è un elemento flex 
+    ma è solo figlio di un container flex, perciò anche cambiando valore, non succede nulla. Viene semplicemente ignorato */
+    text-align: center;
+}
+
+aside h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #2c2f48;
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin-bottom: 15px; /* Spaziatura tra i bottoni della sidebar */
+}
+
+aside ul li a {
+    display: block; /* Trasforma ogni link in un blocco per sembrare un bottone */
+    /* 
+        display: block;
+            -> di default i link (<a>) sono elementi inline, quindi occupano solo lo spazio del testo
+                e non è possibile applicare larghezze, altezze o padding verticali efficaci.
+
+            -> impostando 'display: block;', il link diventa un elemento a blocco, cioè
+                occupa tutta la larghezza del suo contenitore e può avere padding, bordi e sfondi.
+
+            -> in questo modo il link assume l'aspetto e il comportamento visivo
+                di un bottone cliccabile, perché tutta l'area (non solo il testo) diventa interattiva.
+    */
+    padding: 10px; /* Spaziatura interna per il bottone */
+    color: #2c2f48;
+    background-color: #e0e4e8;
+    border: 2px solid #2c2f48;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s; /* Transizione morbida per hover */
+}
+
+aside ul li a:hover {
+    background-color: #a0c4ff;
+    color: #fff;
+}
+
+/* Footer Styles */
+footer {
+    height: 5vh; /* Altezza del footer fissata al 5% dell'altezza della viewport */
+    display: flex;
+    justify-content: space-between; /* Spaziatura tra contatti e social media */
+    align-items: center; /* Allinea (verticalmente, visto che la direction è row) al centro */
+    background-color: #2c2f48;
+    color: #ffffff;
+    padding: 20px 40px;
+    flex-shrink: 0; /* Evita il ridimensionamento */
+}
+
+footer .contact-info {
+    font-size: 14px;
+}
+
+footer .social-media a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 20px; /* Spaziatura tra i link dei social media */
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+footer .social-media a:hover {
+    color: #a0c4ff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header, footer {
+        flex-direction: column; /* Disposizione verticale per schermi piccoli */
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    main {
+        flex-direction: column; /* Disposizione verticale del main per schermi piccoli */
+    }
+
+    article {
+        margin-bottom: 20px;
+    }
+
+    footer {
+        min-height: 10vh;
+    }
+
+    footer .social-media a {
+        margin: 0 10px;
+    }
+}
