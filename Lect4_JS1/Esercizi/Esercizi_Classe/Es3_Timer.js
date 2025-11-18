@@ -25,13 +25,26 @@ function onclick_fn() {
     var max_sec = sec = 10;
     para.textContent = 0;
     var timer = setInterval(function(){
-        para.textContent = max_sec - (--sec);
+        console.log("________________________");
+        console.log("SEC (prima del decremento):", sec);
+        para.textContent = max_sec - (--sec); 
+        console.log("MAX SEC:", max_sec);
+        console.log("SEC (dopo il decremento):", sec);
+        console.log("COUNT [MAX_SEC - SEC]:", max_sec - sec);
         if (sec <=0){
+            console.log("*************************")
             clearInterval(timer);
             button.disabled = false;
         }
     }, 1000);
 };
+
+/*
+para = 0 -> 1 -> 2
+max_sec=10
+sec=10-1=9-1=8
+10 - (9)
+10 - (8)
 
 /*
 function onclick_fn() {

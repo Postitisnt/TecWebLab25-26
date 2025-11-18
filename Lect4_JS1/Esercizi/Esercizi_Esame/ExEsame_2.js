@@ -12,10 +12,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Funzione ausiliaria per popolare l'array associativo
         function popolaArray(daElementi, array, indiceBase = 0) {
             for (var i = 0; i < daElementi.length; i++) {
+                console.log("ITERAZIONE", i, "_____________________");
                 // Creazione di una chiave univoca per ogni elemento con un indice incrementale basato su indiceBase
-                var chiave = 'key_' + (i + indiceBase) + '_';
+                var chiave = 'key_' + (i + indiceBase) + '_'; // 'key_0_'
                 // Aggiunta del contenuto dell'elemento all'array associativo
+                console.log("CHIAVE:", chiave);
                 array[chiave] = daElementi[i].textContent;
+                console.log("ARRAY:", array);
+                console.log("_____________________");
             }
         }
 
@@ -28,8 +32,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Creazione di array_2 con le stesse chiavi di array_1 ma terminanti in "placeholder"
         for (var key in array_1) {
-            var chiaveModificata = key + "placeholder";
+            console.log("************************")
+            console.log("ITERAZIONE CHIAVE:", key);
+            console.log("ARRAY_1[CHIAVE]:", array_1[key]);
+            var chiaveModificata = key + "placeholder"; // "key_0_" + "placeholder" = "key_0_placeholder"
+            console.log("NUOVA CHIAVE:", chiaveModificata);
             array_2[chiaveModificata] = array_1[key];
+            console.log("ARRAY_2:", array_2)
         }
 
         // Ritorna entrambi gli array associativi

@@ -1,0 +1,23 @@
+.mostro {
+    width: 150px;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #ffd37a;
+    border: 2px solid #cc9c3a;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+.mostro.felice {
+    font-weight: bold;
+    background-color: #7af57a;
+    border-color: #3a9c3a;
+    transform: scale(1.05);
+}
+
+#areaMostri {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
