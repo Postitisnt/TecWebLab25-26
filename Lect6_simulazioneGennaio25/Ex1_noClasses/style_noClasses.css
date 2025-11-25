@@ -1,0 +1,372 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Altezza e larghezza includono anche border e padding */
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden; /* Nasconde la barra di scorrimento se il contenuto sborda orizzontalmente */
+  }
+body {
+    display: flex; /* Abbiamo perciò i figli diretti (header, nav, main) in flex - colonna */
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+}
+main {
+    flex: 1;
+    /* 
+        flex: 1 è una shorthand per:
+            flex-grow: 1; -> l’elemento può espandersi per riempire lo spazio libero
+            flex-shrink: 1; -> può restringersi se lo spazio non basta
+            flex-basis: 0; -> la dimensione base considerata è 0
+
+        Nel nostro layout:
+        - Il body è un flex container in colonna (header, nav, main)
+        - header e nav hanno altezza “automatica” (solo quella del loro contenuto)
+        - main ha flex:1 -> significa che "main" prenderà TUTTO lo spazio verticale rimanente.
+          In pratica si allunga finché non arriva in fondo alla pagina.
+
+        Questo permette:
+        - di avere main che riempie la pagina anche se il contenuto è poco
+        - di mantenere eventuali footer sempre in fondo (footer sticky), perché main
+          si espande e li spinge verso il basso.
+
+        Se togli flex:1:
+        - main avrebbe solo l’altezza del contenuto
+        - potresti ritrovarti spazio vuoto sotto il contenuto invece di un layout pieno
+    */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Lungo l'asse principale, in questo caso l'asse verticale 
+    Sarebbe il valore di default, ma in questo caso è inutile! Perché abbiamo "flex:1" e perciò
+    tutto lo spazio della pagina è già occupato, e al suo interno non riusciamo a spostare gli elementi
+    come vogliamo! Lo capiamo poi meglio dalle cards */
+}
+  
+header>div {
+    width: 98%;
+    display: flex; /* Perciò di default "flex-direction:row" */
+    align-items: center; /* Allinea lungo l'asse perpendicolare a quella principale
+    in questo caso row, cioè l'asse x, è la principale;
+    column, cioè l'assse y è la perpendicolare */
+    margin: 0 auto; /* [sopra sotto] [dx sx] -> nessun margine sopra e sotto, ma contenuto al centro rispetto a dx e sx */
+    padding: 2vh;
+}
+
+/* Logo: 10% dello spazio */
+header>div img {
+  flex: 0 1 8%;
+  /* 
+    >flex-grow = 0
+    >flex-shrink = 1
+    >basis = 8% (cioè prova ad occupare come dimensione iniziale l'8% dell'ampiezza disponibile)
+    Questo 8% è calcolato a occhio, vedendo come si comporta il logo
+  */
+  min-width: 5vw;
+  max-width: 10vw; /* al di la di tutto, non dovrà poter occupare piu del 10% del viewport in larghezza */
+  height: auto;
+}
+
+/* Form (barra di ricerca): base 70%, ma cresce o si restringe per riempire */
+header>div form {
+  flex: 1 1 70%;
+  margin: 0 2%;
+}
+/* Input interno: prende il 100% del form */
+header>div form input {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+header>div a {
+    display: block; /* necessario per trattare l'elemento <a> come blocco e non come elemento inline, 
+    perciò per definirne le dimensioni, e per far si che si comporti effettivamente da bottone 
+    (vedere commento nell'HTML */
+    min-width: 6vw; /* minimo 6% della larghezza viewport */
+    max-width: 8vw; /* massimo 8% della larghezza viewport */
+    width: 6vw; /* preferenza: 6% viewport -> però rispetta i limiti sopra */
+    text-align: center;
+    padding: 0.5rem 0;
+    border: none;
+    border-radius: 0.3rem;
+    background: #0033ff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.08rem; /* dimensione testo relativa */
+    transition: background 0.22s, color 0.22s;
+    box-sizing: border-box; /* Altezza e larghezza includono anche border e padding */
+    margin-right: 2.5%;
+}
+header>div a:hover {
+    background: #00c3ff;
+    color: #222;
+}
+
+
+/* NAV */
+nav {
+  background-color: #000;
+  padding: 0.5vh 0; /* verticale */
+}
+
+nav ul {
+    font-size: 75%;
+    font-weight: 700;
+    width: 45vw; /* Occupa meno della metà della larghezza della pagina! */
+    display: flex; /* direction è row, di default. Lo utilizziamo per mettere gli <li> sulla stessa riga */
+    padding: 0 2.5%;
+    justify-content: space-between; /* equamente distribuiti lungo la width */
+    list-style: none; /* Togliamo i pallini dalla lista */
+}
+
+/* 1) Contenitore del dropdown: 
+   lo posizioniamo ‘relative’ affinché il menu figlio 
+   (il primo elemento figlio con "position:absolute") si ancori a questo <li> */
+nav>ul>li { /* Seleziona l'elemento con classi .nav-item e .dropdown */
+  position: relative;
+}
+  
+/* 2) Stile di base del menu a tendina: 
+     - nascosto di default 
+     - posizionato subito sotto il link 
+     - aspetto simile a quello di Bootstrap */
+nav>ul>li>ul {
+  display: none;               /* non visibile finché non attivato (dall'hover sotto) */
+  position: absolute;          /* posiziona il menu rispetto al genitore relativo (cioè .nav-item.dropdown) */
+  top: 100%;                   /* esattamente sotto l’altezza dell’<a> */
+  left: 0;                     /* allinea al bordo sinistro del genitore */
+  z-index: 1000;               /* sopra (avanti) a qualsiasi altro elemento */
+  min-width: fit-content;
+  max-width: fit-content;
+  padding: .5rem 0;            /* spazio interno verticale */
+  margin: .125rem 0 0 0;         /* piccolo margine sopra il menu -> l'ordine è top right bottom left */
+  background-color: #fff;      /* sfondo bianco */
+  border: 1px solid rgba(0,0,0,.15); /* bordo leggero grigio */
+  border-radius: .25rem;       /* angoli arrotondati */
+  /* box-shadow: <offset-x> <offset-y> <blur-radius> <spread-radius [omesso sotto]> <colore> */
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.175); 
+  /* Spostamento Orizzontale = offset-x; Spostamento Verticale = offset-y */
+}
+
+/* 3) Mostriamo il menu al passaggio del mouse su <li> */
+nav>ul>li:hover > ul { /* La ">" è utilizzata per selezionare solo il primo elemento figlio di classe ".dropdown-menu"  */
+  display: block;
+}
+
+/* 4) Styling delle singole voci */
+nav>ul>li>ul>li>a {
+  display: block;
+  width: 100%;
+  padding: .25rem 1.5rem;      /* spaziatura interna -> top/bottom & right/left */
+  /* clear: both;                 /* reset di eventuali float */
+  color: black;              /* colore testo grigio scuro */
+  text-align: center;         /* allineamento ereditato */
+  white-space: nowrap;         /* nessun wrap del testo */
+  background-color: transparent; /* sfondo trasparente - delle voci -> per testare cosa si intende cambia in rosso*/
+  border: 0;                   /* niente bordo interno */
+}
+nav>ul>li>ul>li>a:hover {
+  background-color: #4398ec;   /* sfondo leggero al passaggio */
+  color: #16181b;              /* testo leggermente più scuro */
+}
+  
+/* 5) Triangolino CSS disegnato coi bordi - COMPLETAMENTE NON NECESSARIO AI FINI DELL'ESAME! */
+nav>ul>li>a::after {
+  display: inline-block;       /* comportamento inline per allinearsi al testo */
+  margin-left: .255em;         /* spazio tra testo e freccia */
+  vertical-align: .255em;      /* allineamento verticale con il testo */
+  content: "";                 /* obbligatorio per creare lo pseudo-elemento */
+  border-top: .3em solid;      /* lato superiore colorato */
+  border-right: .3em solid transparent; /* lati trasparenti */
+  border-left: .3em solid transparent;
+  border-top-color: #00ff9d;
+  /* Per capire meglio questa cosa del triangolo guarda il video qui: https://css-tricks.com/snippets/css/css-triangle/ */
+}
+
+nav ul li > a {
+  display: block; /* Serve a far occupare lo spazio dell'elemento container agli elementi di tipo <a>, 
+  che di default sarebbe inline. E fa si che tutta l'area del lnk sia cliccabile. */
+  padding: 1rem;
+  letter-spacing: 0.05rem;
+  text-decoration: none; /* Evitiamo siano sottolineati */
+  color: white;
+}
+
+/* BANNER */
+main>section:first-child {
+    /*position: relative;*/
+    background:
+      linear-gradient(
+        to right,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.85) 35%,
+        rgba(0,0,0,.65) 45%,
+        rgba(0,0,0,.35) 55%,
+        rgba(0,0,0,0) 75%,
+        rgba(0,0,0,0) 100%
+      ),
+      url('img/pokemon.png') no-repeat center/cover;
+    min-height: 40vh;
+    max-height: 40vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Lungo l'asse principale (in questo caso y) */
+    align-items: flex-start; /* Lungo l'asse perpendicolare (in questo caso x) */
+    padding-left: 4.5vw;
+    text-align: left; /* Non è davvero necessario */
+  }
+  
+  main>section:first-child>span {
+  color: #00ff9d;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  display: inline-block; /* Si comporta come inline, MA accetta margin/padding
+  Perciò non rompe il flusso della riga, ma al contempo accetta dimensioni */
+  text-transform: uppercase;
+}
+
+main>section:first-child>h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0.1rem 0 0.6rem 0;
+  line-height: 1.07;
+}
+  
+main>section:first-child>p {
+  margin: 0 0 1.5rem 0; /* Margine sotto per staccarsi dal bottone */
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+main>section:first-child>a {
+  background: #00ff9d;
+  color: #222;
+  border: none;
+  font-weight: 700;
+  font-size: 1.05vw;
+  border-radius: 3px;
+  padding: 0.6vw 1.6vw;
+  text-decoration: none;
+  transition: background 0.35s, color 0.25s; /* qui il background cambia in .35s, mentre il colore del testo in .25s */
+  margin-top: 0.5vw;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.09);
+  display: inline-block; /* andava bene anche block visto che siamo dentro un display flex (quindi
+  la dimensione è data dal contenuto del bottone - shrink-to-fit). Però almeno avete visto una cosa in più.
+  Se dovesse capitarvi fuori da un flex che un <a> (o altro) che deve sembrare un box va ad occupare troppo
+  spazio, la soluzione potrebbe essere proprio l'utilizzo di inline-block. 
+  Per informazioni più specifiche vedete: https://www.w3schools.com/css/css_inline-block.asp */
+}
+main>section:first-child>a:hover {
+  background: #00b36b;
+  color: #fff;
+}
+
+/* CARDS */
+main>section:nth-child(2) {
+  display: flex;
+  flex-direction: row; /* Era comunque il valore di default, lo inseriamo solo per chiarezza */
+  width: 90%;
+  margin: auto;
+  gap: 2vw;
+  /* padding: 2vh 2vw 0 2vw; // No padding sotto */
+  justify-content: center; /* Allinea al centro lungo l'asse principale -> qui è inutile, sotto vediamo perché */
+  height: 35vh;
+}
+main>section:nth-child(2)>article {
+  position: relative; /* Ancora i figli, in questo caso l'img */
+  flex: 1 1 0; /* Equivale a flex: 1 */
+  /* 
+    Utilizzare "flex:1" rende inutile il "justify-content:center" che abbiamo messo sopra.
+    Questo perché, essendo flex:1 la shorthand per:
+        flex-grow: 1; -> l’elemento può espandersi per riempire lo spazio libero
+        flex-shrink: 1; -> può restringersi se lo spazio non basta
+        flex-basis: 0; -> la dimensione base considerata è 0
+    Avremo le due card (.card-large) che andranno ad occupare tutto lo spazio disponibile.
+    Tale spazio è (come vedee da .cards) il 90% della larghezza, e il "margin:auto" fa si che
+    il contenuto sia disposto equamente in questo spazio (con stesso margine a dx e sx, perciò il
+    contenuto si ritrova già al centro).
+    Rimuovendo il "margin:auto", il contenuto si sposterà a sinistra, ma avremo comunque tutto
+    lo spazio (il width:90%) occupato dalle due card, perciò rimarrà ancora inutile l'utilizzo di
+    "justify-content:center".
+  */
+  min-width: 0;
+  background: #fff;
+  overflow: hidden; /* Nasconde eventuali parti dell'img (sotto) che esconoi dai brodi del container */
+  box-shadow: 0 4px 18px 0 rgba(0,0,0,0.09);
+  display: flex;
+  align-items: stretch; /* Stretcha gli elementi per farli adattare alla grandezza disponibile (secondo l'asse, in questo caso asse perpendicolare a quello di riferimento) */
+  /* NO padding qui, solo overlay */
+}
+main>section:nth-child(2)>article img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scala/ritaglia l'immagine per coprire l'area disponibile, mantenendo le proporzioni (Per l'immagine delle build considera il fatto che l'immagine ha quelle righe nere sopra e sotto, quindi non è che ci siano problemi nel cover, è proprio cosi l'immagine */
+    display: block; /* Elimina lo spazio indesiderato degli elementi inline, permette a width/height 100% di funzionare correttamente */
+    position: absolute; /* Estrae l'immagine dal normale flusso del documento -> si posiziona 
+                        nel primo elemento con position:relative che si trova sopra di lui.
+                        Per avere un'idea puoi togliere il position:relative dall'elemento container
+                        e vedere cosa succede. */
+    left: 0; top: 0; /* Posiziona l'immagine nell'angolo in alto a sinistra del contenitore -> sovrapposta al container */
+    z-index: 0; /* Garantisce che l'immagine rimanga sullo sfondo, sotto gli elementi sovrapposti (che avranno z-index maggiore) */
+}
+
+main>section:nth-child(2)>article>div {
+  position: relative;
+  z-index: 1; /* Fa stare sopra */
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);  /* questo serve a dare quell'effetto di "scuro" all'immagine */
+  transition: background 0.45s ease;
+}
+main>section:nth-child(2)>article>div:hover {
+  background: rgba(0,0,0,0.7);
+}
+main>section:nth-child(2)>article span {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+}
+
+main>section:nth-child(2)>article h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1vh;
+  text-shadow: 0 1px 7px rgba(0,0,0,0.28);
+  max-width: 90%;
+  line-height: 1.25;
+}
+
+main>section:nth-child(2)>article a {
+  background: #fff;
+  color: #16181b;
+  font-weight: 700;
+  font-size: 1.05vw;
+  border: none;
+  border-radius: 6px;
+  padding: 0.65vw 1.25vw; /* Aria per il bottone */
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  margin-top: 0.8vw;
+  transition: background 0.15s, color 0.15s;
+  display: inline-block;
+}
+
+main>section:nth-child(2)>article a:hover {
+  background: #00b36b;
+  color: #fff;
+}

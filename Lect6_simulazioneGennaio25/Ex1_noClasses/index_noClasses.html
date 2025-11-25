@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Card Collector</title>
+  <link rel="stylesheet" href="style_noClasses.css">
+</head>
+<body>
+  <header>
+    <div>
+      <img src="img/logo.png" alt="Logo del sito">
+      <form action="#" method="get">
+        <input type="search" placeholder="Cerca carte collezionabili">
+      </form>
+      <a href="#">Sign In</a>
+      <!-- Sarebbe buona norma evitare di mettere un <a> dentro un elemento <button>, perche rende
+          ambiguo ciò che si va a cliccare. Se non hai tempo considerala come una soluzione veloce, 
+          altrimenti faresti meglio a mettere <a> (se vuoi che porti a una pagina di sign-in), o un
+          <button> (se vuoi che si invii un form). Nel caso di <a>, che interessa a noi, si dovrà
+          poi dare lo stile all'elemento per farlo sembrare un bottone.
+          SOLUZIONE VELOCE : <button><a href="#">Sign In</a></button> -->
+    </div>
+  </header>      
+  <nav>
+    <ul>
+        <li>
+          <a href="#">Magic</a>
+          <ul>
+            <li><a href="#">Opzione 1</a></li>
+            <li><a href="#">Opzione 2</a></li>
+            <li><a href="#">Opzione 3</a></li>
+          </ul>
+        </li>
+        <li>
+            <a href="#">Yu-Gi-Oh!</a>
+            <ul>
+              <li><a href="#">Opzione 1</a></li>
+              <li><a href="#">Opzione 2</a></li>
+              <li><a href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Pokemon</a>
+            <ul>
+              <li><a href="#">Opzione 1</a></li>
+              <li><a href="#">Opzione 2</a></li>
+              <li><a href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Disney Lorcana</a>
+            <ul>
+              <li><a href="#">Opzione 1</a></li>
+              <li><a href="#">Opzione 2</a></li>
+              <li><a href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+    </ul>
+  </nav>
+  <main>
+    <section>
+        <span>POKÉMON</span>
+        <h1>SV: Prismatic Evolutions</h1>
+        <p>Releases January 17th</p>
+        <a href="#">Preorder Now</a>
+    </section>
+      
+    <section>
+      <article>
+        <img src="img/builds.png" alt="Budget Builds For Set Championships!">
+        <div>
+            <span><h2>Budget Builds For</br>Set Championships!</h2></span>
+            <a href="#">Win Cheap</a>
+        </div>
+      </article>
+      <article>
+        <img src="img/mtg.png" alt="Which Magic: The Gathering Cards are on the Move this Week?">
+        <div>
+            <span><h2>Which Magic: The Gathering</br>Cards are on the Move this Week?</h2></span>
+            <a href="#">Read Now</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  
+</body>
+</html>

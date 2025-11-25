@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Card Collector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <img src="img/logo.png" alt="Logo del sito">
+      <form action="#" method="get">
+        <input type="search" placeholder="Cerca carte collezionabili">
+      </form>
+      <a href="#" class="sign-in-btn">Sign In</a>
+      <!-- Sarebbe buona norma evitare di mettere un <a> dentro un elemento <button>, perche rende
+          ambiguo ciò che si va a cliccare. Se non hai tempo considerala come una soluzione veloce, 
+          altrimenti faresti meglio a mettere <a> (se vuoi che porti a una pagina di sign-in), o un
+          <button> (se vuoi che si invii un form). Nel caso di <a>, che interessa a noi, si dovrà
+          poi dare lo stile all'elemento per farlo sembrare un bottone.
+          SOLUZIONE VELOCE : <button><a href="#">Sign In</a></button> -->
+    </div>
+  </header>      
+  <nav>
+    <ul class="nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#">Magic</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Opzione 1</a></li>
+            <li><a class="dropdown-item" href="#">Opzione 2</a></li>
+            <li><a class="dropdown-item" href="#">Opzione 3</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#">Yu-Gi-Oh!</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Opzione 1</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 2</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#">Pokemon</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Opzione 1</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 2</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#">Disney Lorcana</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Opzione 1</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 2</a></li>
+              <li><a class="dropdown-item" href="#">Opzione 3</a></li>
+            </ul>
+        </li>
+    </ul>
+  </nav>
+  <main>
+    <section class="banner">
+        <span class="banner-category">POKÉMON</span>
+        <h1>SV: Prismatic Evolutions</h1>
+        <p class="banner-date">Releases January 17th</p>
+        <a href="#" class="banner-btn">Preorder Now</a>
+    </section>
+      
+    <section class="cards">
+      <article class="card-large left-card">
+        <img src="img/builds.png" alt="Budget Builds For Set Championships!">
+        <div class="card-overlay">
+            <span class="card-title"><h2>Budget Builds For</br>Set Championships!</h2></span>
+            <a href="#" class="card-btn">Win Cheap</a>
+        </div>
+      </article>
+      <article class="card-large right-card">
+        <img src="img/mtg.png" alt="Which Magic: The Gathering Cards are on the Move this Week?">
+        <div class="card-overlay">
+            <span class="card-title"><h2>Which Magic: The Gathering</br>Cards are on the Move this Week?</h2></span>
+            <a href="#" class="card-btn">Read Now</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  
+</body>
+</html>
