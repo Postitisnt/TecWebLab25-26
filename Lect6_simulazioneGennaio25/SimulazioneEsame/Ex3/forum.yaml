@@ -1,0 +1,164 @@
+swagger: '2.0'
+info:
+  title: Forum API
+  version: '1.0.0'
+  description: API REST per la gestione parziale di un forum di discussione.
+
+paths:
+  /threads/{threadId}/messages: #Esempio -> "GET /threads/12/messages?vote=8"
+    get:
+      summary: Ottiene tutti i messaggi di un thread con un dato voto
+      parameters:
+        - name: threadId
+          in: path
+          description: ID del thread
+          required: true
+          type: integer
+        - name: vote
+          in: query
+          description: Voto per filtrare (0-10)
+          required: true
+          type: integer
+          minimum: 0
+          maximum: 10
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Message'
+          examples:
+            application/json:
+              - id: 1
+                text: "Messaggio di esempio con voto 8"
+                vote: 8
+              - id: 2
+                text: "Altro messaggio di esempio con voto 8"
+                vote: 8
+        400:
+          description: Parametri in input non validi
+
+  /threads/{threadId}/messages/{messageId}:
+    delete:
+      summary: Cancella un messaggio da un thread
+      parameters:
+        - name: threadId
+          in: path
+          description: ID del thread
+          required: true
+          type: integer
+        - name: messageId
+          in: path
+          description: ID del messaggio
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Success
+        400:
+          description: Parametri in input non validi
+
+    # Notare che utilizziamo lo stesso path definito per il DELETE.
+    # Le richieste saranno identificate dal metodo quindi:
+    #   - DELETE /threads/3/messages/12
+    #   - PUT /threads/3/messages/12
+    put:
+      summary: Modifica il voto di un messaggio
+      consumes: # consumes specifica il tipo di contenuto (Content-Type) che una rotta accetta in input nel corpo della richiesta (in genere si usa per metodi che hanno una richiesta in body)
+        - application/json # Questa PUT accetta dati nel formato JSON (es. { "vote": 7 }) nel corpo della richiesta
+        # NOTE:
+        # "consumes" specifica il Content-Type accettato nel BODY della richiesta.
+        # In Swagger 2.0 è spesso opzionale, perché quando c'è un parametro "in: body"
+        # Swagger assume automaticamente "application/json" come default.
+        #
+        # QUANDO PUÒ ESSERE UTILE O NECESSARIO:
+        # - Quando l'endpoint deve accettare form-data (es. upload file):
+        #       consumes:
+        #         - multipart/form-data
+        # - Quando si vogliono accettare solo campi URL-encoded:
+        #       consumes:
+        #         - application/x-www-form-urlencoded
+        # - Quando un endpoint deve gestire più formati (json + xml + ecc.)
+        # - Quando si vuole rendere esplicito nel doc che l'input è JSON
+        #
+        # Se l'endpoint accetta solo JSON (come in questo caso, e in tutti gli altri casi visti a lezione...), "consumes"
+        # è facoltativo e si può anche omettere, senza cambiare il comportamento.
+
+      parameters:
+        - name: threadId
+          in: path
+          description: ID del thread
+          required: true
+          type: integer
+        - name: messageId
+          in: path
+          description: ID del messaggio
+          required: true
+          type: integer
+        - in: body
+          name: nuovoVoto
+          description: Nuovo valore del voto
+          required: true
+          schema:
+            type: object
+            properties:
+              vote: # Questo è la proprietà reale da passare nel body!
+                type: integer
+                minimum: 0
+                maximum: 10
+          # un esempio del body della richiesta sarà perciò:
+          # {"vote": 7} # NOTARE: "vote", non "nuovoVoto"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/Message'
+          examples:
+            application/json: # specifica il tipo di dato che viene ritornato (in questo caso json), e se si vogliono mettere esempi nelle richieste è necessario
+              id: 42
+              text: "Voto aggiornato"
+              vote: 9
+        400:
+          description: Parametri in input non validi
+
+definitions:
+  Message:
+    type: object
+    required: [id, text, vote]
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
+      vote:
+        type: integer
+        minimum: 0
+        maximum: 10
+    example:
+      id: 5
+      text: "Questo è un messaggio di esempio"
+      vote: 6
+
+  Thread:
+    type: object
+    required: [id, title, messages]
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      messages:
+        type: array
+        items:
+          $ref: '#/definitions/Message'
+    example:
+      id: 1
+      title: "Discussione su REST"
+      messages:
+        - id: 101
+          text: "Primo messaggio"
+          vote: 8
+        - id: 102
+          text: "Secondo messaggio"
+          vote: 6
