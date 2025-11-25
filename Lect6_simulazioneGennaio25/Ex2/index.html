@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Morra Cinese</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    button { margin: 0.5rem; padding: 1rem 2rem; font-size: 1rem; }
+    #result, #history, #final { margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Morra Cinese</h1>
+  <div id="choices">
+    <button data-move="Sasso">Sasso</button>
+    <button data-move="Carta">Carta</button>
+    <button data-move="Forbici">Forbici</button>
+  </div>
+  <div id="result"></div>
+  <div id="history">
+    <p>Vittorie: <span id="win">0</span></p>
+    <p>Sconfitte: <span id="lose">0</span></p>
+    <p>Pareggi: <span id="draw">0</span></p>
+  </div>
+  <div id="final"></div>
+
+  <!-- Collegamento al file JS esterno -->
+  <script src="morra.js"></script>
+</body>
+</html>

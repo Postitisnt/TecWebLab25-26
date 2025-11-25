@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Morra Cinese</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    button { margin: 0.5rem; padding: 1rem 2rem; font-size: 1rem; }
+    #result, #history, #final { margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Morra Cinese</h1>
+
+  <div id="choices">
+    <button data-move="Sasso">Sasso</button>
+    <button data-move="Carta">Carta</button>
+    <button data-move="Forbici">Forbici</button>
+  </div>
+
+  <div id="result">
+    <!-- Da popolare -->
+  </div>
+
+  <div id="history">
+    <p>Vittorie: <span id="win">0</span></p>
+    <p>Sconfitte: <span id="lose">0</span></p>
+    <p>Pareggi: <span id="draw">0</span></p>
+  </div>
+
+  <div id="final">
+    <!-- Da popolare -->
+  </div>
+
+  <!-- Collegamento al JS -->
+  <script src="scriptNoJQ.js"></script>
+</body>
+<!-- 
+  DATA ATTRIBUTES (data-*)
+
+  - Gli attributi che iniziano con "data-" sono attributi personalizzati HTML5.
+    Esempi:
+      data-move="Sasso"
+      data-id="10"
+      data-price="5.99"
+
+  - Servono per aggiungere informazioni extra agli elementi HTML
+    senza inventare attributi non validi.
+
+  COME SELEZIONARLI (CSS / JS):
+
+    • document.querySelectorAll('button[data-move]')
+      -> seleziona tutti i button che possiedono l'attributo data-move,
+         indipendentemente dal valore.
+
+    • Qualunque attributo data-* può essere usato nei selettori CSS.
+      Esempi validi:
+        div[data-id]
+        li[data-role]
+        img[data-user-info]
+
+  COME LEGGERNE IL VALORE IN JAVASCRIPT:
+
+    • element.dataset.nome
+      -> restituisce il valore dell'attributo data-nome (senza "data-")
+      -> i trattini vengono convertiti in camelCase.
+      
+      Esempi:
+        HTML: <button data-move="Sasso">
+        JS:   button.dataset.move   -> "Sasso"
+
+        HTML: <div data-user-id="123">
+        JS:   div.dataset.userId    -> "123"
+
+      !!!!!!!!!!!!!!!!!!!!!!
+      Utilizzare *.dataset.* è specifico per i data-* attributes.
+      Noi utilizzeremo però qualcosa del genere: button.getAttribute('data-move'), 
+      che va bene per ogni attributo e ne ritorna il valore allo stesso modo.
+      !!!!!!!!!!!!!!!!!!!!!!
+
+  NOTE IMPORTANTI:
+    - Tutti i valori dei data-* vengono sempre restituiti come stringhe.
+    - L'attributo HTML si scrive sempre data-qualcosa.
+      Non si possono inventare attributi tipo "colore-si":
+      sarebbe HTML non valido.
+-->
+</html>

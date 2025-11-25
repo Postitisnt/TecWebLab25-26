@@ -17,6 +17,7 @@ body {
     min-height: 100vh;
     height: 100vh;
 }
+
 main {
     flex: 1;
     /* 
@@ -281,6 +282,7 @@ main>section:nth-child(2) {
   justify-content: center; /* Allinea al centro lungo l'asse principale -> qui è inutile, sotto vediamo perché */
   height: 35vh;
 }
+
 main>section:nth-child(2)>article {
   position: relative; /* Ancora i figli, in questo caso l'img */
   flex: 1 1 0; /* Equivale a flex: 1 */
@@ -336,6 +338,7 @@ main>section:nth-child(2)>article>div {
 main>section:nth-child(2)>article>div:hover {
   background: rgba(0,0,0,0.7);
 }
+
 main>section:nth-child(2)>article span {
   width: 100%;
   display: flex;
